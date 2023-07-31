@@ -1,7 +1,7 @@
 {
     "name": "mvc-tech-blog",
     "version": "1.0.0",
-    "description": "",
+    "description": "App to view and create blog posts",
     "main": "server.js",
     "scripts": {
       "test": "echo \"Error: no test specified\" && exit 1",
@@ -9,7 +9,7 @@
       "seed": "node seeds/seed.js"
     },
     "keywords": [],
-    "author": "",
+    "author": "DNasson",
     "license": "MIT",
     "dependencies": {
       "bcrypt": "^5.0.0",
