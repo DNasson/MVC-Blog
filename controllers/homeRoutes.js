@@ -1,7 +1,6 @@
 const router = require("express").Router();
 const { Post, User, Comment } = require("../models");
-const withAuth = require("../utils/auth");
-
+const sequelize = require("../config/connection");
 // GET all posts for homepage
 router.get("/", async (req, res) => {
   try {
@@ -18,11 +17,9 @@ router.get("/", async (req, res) => {
             model: User,
             attributes: ["name"],
           },
-        }
+        },
       ],
-        order: [
-          ['date_created', 'DESC']
-        ]
+      order: [["date_created", "DESC"]],
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
@@ -31,7 +28,8 @@ router.get("/", async (req, res) => {
       posts,
       logged_in: req.session.logged_in,
       username: req.session.username,
-      user_id: req.session.user_id});
+      user_id: req.session.user_id,
+    });
   } catch (err) {
     res.status(500).json(err);
   }
@@ -57,18 +55,22 @@ router.get("/post/:id", async (req, res) => {
       ],
     });
 
-    const post = postData.get({ plain: true });
-
-    res.render("post", {
-      ...post,
-      logged_in: req.session.logged_in,
-    });
+    if (postData) {
+      const post = postData.get({ plain: true });
+      console.log(post);
+      res.render("single-post", {
+        post,
+        loggedIn: req.session.loggedIn,
+        username: req.session.username,
+      });
+    } else {
+      res.status(404).json({ message: "This id has no post." });
+      return;
+    }
   } catch (err) {
     res.status(500).json(err);
   }
 });
-
-
 
 router.get("/login", (req, res) => {
   if (req.session.logged_in) {
@@ -77,6 +79,11 @@ router.get("/login", (req, res) => {
   }
 
   res.render("login");
+});
+
+// signup route
+router.get("/signup", (req, res) => {
+  res.render("signup");
 });
 
 module.exports = router;
