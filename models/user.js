@@ -13,7 +13,6 @@ class User extends Model {
 // define table columns and configuration
 User.init(
     {
-        // TABLE COLUMN DEFINITIONS GO HERE
         // define an id column
         id: {
             // use the special Sequelize DataTypes object provide what type of data it is
@@ -29,17 +28,6 @@ User.init(
         username: {
             type: DataTypes.STRING,
             allowNull: false
-            },
-        // define an email column
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            // there cannot be any duplicate email values in this table
-            unique: true,
-            // if allowNull is set to false, we can run our data through validators before creating the table data
-            validate: {
-                isEmail: true
-                }
             },
         // define a password column
         password: {
@@ -57,7 +45,12 @@ User.init(
                 async beforeCreate(newUserData) {
                     newUserData.password = await bcrypt.hash(newUserData.password, 10);
                     return newUserData;
+                    },
+                async beforeUpdate(updatedUserData) {
+                    updatedUserData.password = await bcrypt.hash(updatedUserData.password, 10);
+                    return updatedUserData;
                     }
+
                 },
             sequelize,
             timestamps: false,
