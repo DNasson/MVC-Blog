@@ -1,6 +1,5 @@
-{{#each posts}}
-  <div class="post">
-    <h2>{{title}}</h2>
-    <p>{{body}}</p>
-  </div>
-{{/each}}
+<div class="posts">
+  {{#each posts as |post|}}
+    {{> postcard post=post}}
+  {{/each}}
+</div>
