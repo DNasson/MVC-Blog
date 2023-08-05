@@ -12,7 +12,7 @@ const seedDatabase = async () => {
         returning: true,
     });
 
-    await Blog.bulkCreate(postData);
+    await Blog.bulkCreate(blogData);
 
     process.exit(0);
 }

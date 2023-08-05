@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { Post, User } = require("../models");
+const { Post, User, Comment } = require("../models");
 const withAuth = require("../utils/auth");
 
 // GET all posts for homepage
@@ -11,7 +11,18 @@ router.get("/", async (req, res) => {
           model: User,
           attributes: ["name"],
         },
+        {
+          model: Comment,
+          attributes: ["id", "content", "date_created", "user_id", "post_id"],
+          include: {
+            model: User,
+            attributes: ["name"],
+          },
+        }
       ],
+        order: [
+          ['date_created', 'DESC']
+        ]
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
@@ -19,7 +30,8 @@ router.get("/", async (req, res) => {
     res.render("homepage", {
       posts,
       logged_in: req.session.logged_in,
-    });
+      username: req.session.username,
+      user_id: req.session.user_id});
   } catch (err) {
     res.status(500).json(err);
   }
@@ -33,6 +45,14 @@ router.get("/post/:id", async (req, res) => {
         {
           model: User,
           attributes: ["name"],
+        },
+        {
+          model: Comment,
+          attributes: ["id", "content", "date_created", "user_id", "post_id"],
+          include: {
+            model: User,
+            attributes: ["name"],
+          },
         },
       ],
     });
@@ -48,41 +68,7 @@ router.get("/post/:id", async (req, res) => {
   }
 });
 
-// GET all posts by logged in user
-router.get("/dashboard", withAuth, async (req, res) => {
-  try {
-    // Find the logged in user based on the session ID
-    const userData = await User.findByPk(req.session.user_id, {
-      attributes: { exclude: ["password"] },
-      include: [{ model: Post }],
-    });
 
-    const user = userData.get({ plain: true });
-
-    res.render("dashboard", {
-      ...user,
-      logged_in: true,
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
-
-// GET one post by logged in user
-router.get("/dashboard/edit/:id", withAuth, async (req, res) => {
-  try {
-    const postData = await Post.findByPk(req.params.id);
-
-    const post = postData.get({ plain: true });
-
-    res.render("edit-post", {
-      ...post,
-      logged_in: true,
-    });
-  } catch (err) {
-    res.status(500).json(err);
-  }
-});
 
 router.get("/login", (req, res) => {
   if (req.session.logged_in) {
