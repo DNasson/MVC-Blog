@@ -8,18 +8,18 @@ router.get("/", async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["name"],
+          attributes: ["username"],
         },
         {
           model: Comment,
-          attributes: ["id", "content", "date_created", "user_id"],
+          attributes: ["id", "comment", "created_at", "user_id"],
           include: {
             model: User,
-            attributes: ["name"],
+            attributes: ["username"],
           },
         },
       ],
-      order: [["date_created", "DESC"]],
+      order: [["created_at", "DESC"]],
     });
 
     const posts = postData.map((post) => post.get({ plain: true }));
@@ -27,7 +27,7 @@ router.get("/", async (req, res) => {
     res.render("homepage", {
       posts,
       logged_in: req.session.logged_in,
-      username: req.session.username,
+      userusername: req.session.userusername,
       user_id: req.session.user_id,
     });
   } catch (err) {
@@ -42,14 +42,14 @@ router.get("/post/:id", async (req, res) => {
       include: [
         {
           model: User,
-          attributes: ["name"],
+          attributes: ["username"],
         },
         {
           model: Comment,
-          attributes: ["id", "content", "date_created", "user_id"],
+          attributes: ["id", "comment", "created_at", "user_id"],
           include: {
             model: User,
-            attributes: ["name"],
+            attributes: ["username"],
           },
         },
       ],
@@ -61,7 +61,7 @@ router.get("/post/:id", async (req, res) => {
       res.render("single-post", {
         post,
         loggedIn: req.session.loggedIn,
-        username: req.session.username,
+        userusername: req.session.userusername,
       });
     } else {
       res.status(404).json({ message: "This id has no post." });
