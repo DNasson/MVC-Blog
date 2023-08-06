@@ -53,6 +53,7 @@ Run "NPM i" followed by "NPM run start" to run the application
 ## Usage
 
 URL: https://blooming-retreat-55203-6cc4bb81340c.herokuapp.com/
+Screenshot: ![F2D0931E-D490-4B47-8CE1-3D3E42707169](https://github.com/DNasson/MVC-Blog/assets/123035338/2e025318-17d7-4ccd-a71f-136be2db733c)
 
 
 ## Credits
