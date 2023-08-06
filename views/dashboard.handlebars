@@ -1,32 +1,22 @@
-<h1>Dashboard</h1>
-<section id="existingblogs">
-{{#each blogs}}
-  <section class="card">
-      <a href="/blogs/{{id}}" class="card-body">
-        <h3 class="card-title">{{title}}</h3> 
-        <h5>Posted on {{createdAt}}</h5>
-        <p class="card-text">{{content}}</p>
-    </a>
-  </section>
-{{/each}}
-</section>
-<section id="createNew" class="card text-center">
-  <div class="card-body">
-  <h3 class="card-title">Create New Post</h3>
-  <form id="newBlog">
-    <div class="card-text"></div>
-      <label for="title">Title</label><br>
-      <input type="text" id="title" placeholder="title">
+{{#if posts.length}}
+<section>
+    <div class="row align-items-center">
+        <h2>Hello, {{username}}!</h2>
+        <p>Please click on the post title to edit it!</p>
     </div>
-    <div class="card-text"></div>
-      <label for="content">Content</label>
-    <textarea id="content" placeholder="content"></textarea>
-    </div>
-    <button id="create">Create</button>
-</form>
-</div>
+    <br>
+    {{#each posts as |post|}}
+    <input type="hidden" name="post-id" value="{{post.id}}"/>
+        <div class="card">
+            <div class="card-header">
+                <h4><a class="link" href="/dashboard/edit/{{id}}">{{title}}</a></h4>
+            </div>  
+            <button class="btn btn-danger" id="del-post-btn"><i class="bi bi-trash"></i>Delete Post</button>                          
+        </div>
+    {{/each}}
+    
 </section>
-<form id="newpost">
-    <button>+ New Post</button>
-</form>
-<script src="/js/new-post.js"></script>
+{{/if}}
+<button type="submit" class="btn"><a href="/dashboard/new"><i class="bi bi-plus-square"></i>Add New Post</a></button>
+
+<script src="js/deletepost.js"></script>
