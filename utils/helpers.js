@@ -1,5 +1,5 @@
 module.exports = {
-    format_date: date => {
+    formatdate: date => {
         return date.toLocaleDateString();
     },
     format_plural: (word, amount) => {
