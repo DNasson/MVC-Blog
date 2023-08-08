@@ -12,6 +12,6 @@ const deleteHandler = async () => {
     }
 };
 
-if(delButton!=null){
-    delButton.addEventListener('click', deleteHandler);
-}
+document
+  .querySelector('.project-list')
+  .addEventListener('click', deleteHandler);

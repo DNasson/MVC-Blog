@@ -7,14 +7,14 @@ const sequelize = require("../config/connections");
 router.get("/", withAuth, (req, res) => {
   Post.findAll({
     where: {
-      userId: req.session.userId,
+      user_id: req.session.user_id,
     },
     attributes: ["id", "title", "content", "created_at"],
     order: [["created_at", "DESC"]],
     include: [
       {
         model: Comment,
-        attributes: ["id", "comment", "postId", "userId", "created_at"],
+        attributes: ["id", "comment", "postId", "user_id", "created_at"],
         include: {
           model: User,
           attributes: ["username"],
@@ -54,7 +54,7 @@ router.get("/edit/:id", withAuth, async (req, res) => {
       },
       {
         model: Comment,
-        attributes: ["id", "comment", "postId", "userId", "created_at"],
+        attributes: ["id", "comment", "postId", "user_id", "created_at"],
         include: {
           model: User,
           attributes: ["username"],
