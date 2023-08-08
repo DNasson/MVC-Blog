@@ -5,7 +5,7 @@ const withAuth = require('../../utils/auth');
 // create a new post ('/api/post')
 router.post('/', withAuth, async (req, res) => {
     try {
-        const newPost = await Post.create({ ...req.body, userId: req.session.userId });
+        const newPost = await Post.create({ ...req.body, user_id: req.session.user_id });
         console.log("This is the new post", newPost);
         res.status(200).json(newPost);
     } catch (err) {
@@ -47,12 +47,12 @@ router.delete('/:id', withAuth, async (req, res) => {
       const postData = await Post.destroy({
         where: {
           id: req.params.id,
-          userId: req.session.userId,
+          user_id: req.session.user_id,
         },
       });
       if (!postData) {
         res.status(404).json({
-          message: `No User Id ${req.session.userId} found with id = ${req.params.id}`,
+          message: `No User Id ${req.session.user_id} found with id = ${req.params.id}`,
         });
         return;
       }
